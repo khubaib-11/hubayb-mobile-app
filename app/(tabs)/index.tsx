@@ -1,31 +1,16 @@
-import { StyleSheet } from 'react-native';
+import Screen from '@/components/common/Screen/Screen';
+import { H14 } from '@/components/common/Typography/Headings';
+import { L16 } from '@/components/common/Typography/Labels';
+import { P14, P16 } from '@/components/common/Typography/Paragraph';
 
-import EditScreenInfo from '@/components/EditScreenInfo';
-import { Text, View } from '@/components/Themed';
-
-export default function TabOneScreen() {
+export default function index() {
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Tab One</Text>
-      <View style={styles.separator} lightColor="#eee" darkColor="rgba(255,255,255,0.1)" />
-      <EditScreenInfo path="app/(tabs)/index.tsx" />
-    </View>
+    <Screen>
+      <H14>Home is good</H14>
+      <H14>Home is good</H14>
+      <P14>I am body</P14>
+      <P16>I am body</P16>
+      <L16>I am label</L16>
+    </Screen>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  title: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  separator: {
-    marginVertical: 30,
-    height: 1,
-    width: '80%',
-  },
-});

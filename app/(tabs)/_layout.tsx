@@ -1,57 +1,118 @@
-import React from 'react';
-import FontAwesome from '@expo/vector-icons/FontAwesome';
-import { Link, Tabs } from 'expo-router';
-import { Pressable } from 'react-native';
-
-import Colors from '@/constants/Colors';
-import { useColorScheme } from '@/components/useColorScheme';
+import TabBarIcon from '@/components/common/Icons/TabBarIcon/TabBarIcon';
+import TabLabel from '@/components/tabs/TabLabel';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-
-// You can explore the built-in icon families and icons on the web at https://icons.expo.fyi/
-function TabBarIcon(props: {
-  name: React.ComponentProps<typeof FontAwesome>['name'];
-  color: string;
-}) {
-  return <FontAwesome size={28} style={{ marginBottom: -3 }} {...props} />;
-}
+import { useColorScheme } from '@/components/useColorScheme';
+import Colors from '@/constants/Colors';
+import { Heart, Home, ShoppingBag, UserCircle2 } from '@tamagui/lucide-icons';
+import { Tabs } from 'expo-router';
+import { mvs } from 'react-native-size-matters';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
+  console.log(colorScheme);
+  console.log(Colors);
 
   return (
     <Tabs
       screenOptions={{
-        tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+        // ! Enable below option when themes are implemented
+        // tabBarActiveTintColor: Colors[colorScheme ?? 'light'].tint,
+
+        tabBarActiveTintColor: '#1D1E22',
+        tabBarInactiveTintColor: 'rgba(29, 30, 34, 0.6)',
+        tabBarHideOnKeyboard: true,
         // Disable the static render of the header on web
         // to prevent a hydration error in React Navigation v6.
         headerShown: useClientOnlyValue(false, true),
-      }}>
+        tabBarStyle: {
+          // backgroundColor: 'white',
+          paddingTop: 2,
+          paddingBottom: 4,
+          height: mvs(48),
+        },
+      }}
+    >
       <Tabs.Screen
         name="index"
         options={{
-          title: 'Tab One',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
-          headerRight: () => (
-            <Link href="/modal" asChild>
-              <Pressable>
-                {({ pressed }) => (
-                  <FontAwesome
-                    name="info-circle"
-                    size={25}
-                    color={Colors[colorScheme ?? 'light'].text}
-                    style={{ marginRight: 15, opacity: pressed ? 0.5 : 1 }}
-                  />
-                )}
-              </Pressable>
-            </Link>
+          title: 'Home',
+          tabBarLabel: ({ focused, color }) => (
+            <TabLabel
+              color={color}
+              focused={focused}
+              label="Home"
+            />
+          ),
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              color={color}
+              focused={focused}
+              icon={Home}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Bag"
+        options={{
+          title: 'Bag',
+          tabBarLabel: ({ focused, color }) => (
+            <TabLabel
+              color={color}
+              focused={focused}
+              label="Bag"
+            />
+          ),
+
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              color={color}
+              focused={focused}
+              icon={ShoppingBag}
+            />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="Like"
+        options={{
+          title: 'Likes',
+          tabBarLabel: ({ focused, color }) => (
+            <TabLabel
+              color={color}
+              focused={focused}
+              label="Likes"
+            />
+          ),
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              color={color}
+              focused={focused}
+              icon={Heart}
+            />
           ),
         }}
       />
       <Tabs.Screen
-        name="two"
+        name="Account"
         options={{
-          title: 'Tab Two',
-          tabBarIcon: ({ color }) => <TabBarIcon name="code" color={color} />,
+          title: 'Account',
+          tabBarLabel: ({ focused, color }) => (
+            <TabLabel
+              color={color}
+              focused={focused}
+              label="Account"
+            />
+          ),
+          tabBarIcon: ({ color, focused }) => (
+            <TabBarIcon
+              color={color}
+              focused={focused}
+              icon={UserCircle2}
+            />
+          ),
         }}
       />
     </Tabs>
