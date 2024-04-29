@@ -51,7 +51,25 @@ export default {
     output: 'static',
     favicon: './assets/images/favicon.png',
   },
-  plugins: ['expo-router'],
+  plugins: [
+    'expo-router',
+    [
+      'expo-font',
+      {
+        fonts: [
+          './assets/fonts/Outfit-Regular.ttf',
+          './assets/fonts/Outfit-Medium.ttf',
+          './assets/fonts/Outfit-Bold.ttf',
+        ],
+      },
+    ],
+    [
+      'expo-location',
+      {
+        locationWhenInUsePermission: 'Show current location on map.',
+      },
+    ],
+  ],
 
   // ? Change this to actual app id from expo account
   // updates: {
@@ -64,10 +82,9 @@ export default {
     typedRoutes: true,
   },
 
-  // ?Also change this to actual project id
-  // extra: {
-  //   eas: {
-  //     projectId: '7bdbd648-8ede-4561-b4a5-5fb7f62ded40',
-  //   },
-  // },
+  extra: {
+    eas: {
+      projectId: '7bdbd648-8ede-4561-b4a5-5fb7f62ded40',
+    },
+  },
 };

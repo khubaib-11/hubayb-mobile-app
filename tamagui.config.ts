@@ -3,7 +3,8 @@ import { shorthands } from '@tamagui/shorthands';
 import { s, vs } from 'react-native-size-matters';
 
 const outFitFont = createFont({
-  family: 'outFit',
+  // family: '/assets/fonts/Outfit-Regular.ttf',
+  family: 'Outfit-Regular',
 
   size: {
     11: 11,
@@ -14,6 +15,7 @@ const outFitFont = createFont({
     16: 16,
     18: 18,
     22: 22,
+    24: 24,
     32: 32,
     40: 40,
   },
@@ -48,10 +50,10 @@ const outFitFont = createFont({
   // (native only) swaps out fonts by face/style
 
   face: {
-    400: { normal: 'outFit' },
-    true: { normal: 'outFit' },
-    500: { normal: 'outFitMedium' },
-    600: { normal: 'outFitBold' },
+    400: { normal: 'Outfit-Regular' },
+    true: { normal: 'Outfit-Regular' },
+    500: { normal: 'Outfit-Medium' },
+    600: { normal: 'Outfit-Bold' },
   },
 });
 

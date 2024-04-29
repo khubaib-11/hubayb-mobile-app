@@ -1,13 +1,16 @@
 import FontAwesome from '@expo/vector-icons/FontAwesome';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
-import { Stack } from 'expo-router';
+import { Stack, router } from 'expo-router';
 import * as SplashScreen from 'expo-splash-screen';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
+import { useColorScheme } from '@/components/useColorScheme';
 import { TamaguiProvider } from '@tamagui/core';
 import config from '../tamagui.config';
-import { useColorScheme } from '@/components/useColorScheme';
+import supabase from '@/services/supabase/supabase';
+import { Session } from '@supabase/supabase-js';
+import { ToastAndroid } from 'react-native';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -24,7 +27,28 @@ export const unstable_settings = {
 SplashScreen.preventAutoHideAsync();
 
 function RootLayoutNav() {
+  const [isLoadingSession, setIsLoadingSession] = useState(false);
+  const [hasSession, setHasSession] = useState(false);
   const colorScheme = useColorScheme();
+
+  useEffect(() => {
+    supabase.auth
+      .getSession()
+      .then(({ data: { session } }) => {
+        setIsLoadingSession(false);
+        if (session) {
+          setHasSession(true);
+          SplashScreen.hideAsync();
+          ToastAndroid.show('✅ Session found', 2000);
+        } else {
+          setHasSession(false);
+          ToastAndroid.show('❌ Session not found', 2000);
+          SplashScreen.hideAsync();
+          router.replace('/SignUp');
+        }
+      })
+      .catch((e) => ToastAndroid.show(e.message, 3000));
+  }, []);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -34,8 +58,9 @@ function RootLayoutNav() {
             name="(tabs)"
             options={{ headerShown: false }}
           />
+
           <Stack.Screen
-            name="modal"
+            name="signUp"
             options={{ presentation: 'modal' }}
           />
         </Stack>
@@ -45,30 +70,5 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
-  const [loaded, error] = useFonts({
-    // eslint-disable-next-line
-    outFit: require('../assets/fonts/Outfit-Regular.ttf'),
-    // eslint-disable-next-line
-    outFitMedium: require('../assets/fonts/Outfit-Medium.ttf'),
-    // eslint-disable-next-line
-    outFitBold: require('../assets/fonts/Outfit-Bold.ttf'),
-    ...FontAwesome.font,
-  });
-
-  // Expo Router uses Error Boundaries to catch errors in the navigation tree.
-  useEffect(() => {
-    if (error) throw error;
-  }, [error]);
-
-  useEffect(() => {
-    if (loaded) {
-      SplashScreen.hideAsync();
-    }
-  }, [loaded]);
-
-  if (!loaded) {
-    return null;
-  }
-
   return <RootLayoutNav />;
 }

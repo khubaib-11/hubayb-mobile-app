@@ -9,8 +9,6 @@ import { mvs } from 'react-native-size-matters';
 
 export default function TabLayout() {
   const colorScheme = useColorScheme();
-  console.log(colorScheme);
-  console.log(Colors);
 
   return (
     <Tabs

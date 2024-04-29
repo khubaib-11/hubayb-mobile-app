@@ -1,4 +1,5 @@
 import { styled, Text, TextProps } from '@tamagui/core';
+import { ReactNode } from 'react';
 
 // Don't exports this Headings component. It is used inside of below component.
 const Label = styled(Text, {
@@ -8,7 +9,13 @@ const Label = styled(Text, {
 });
 
 // H14 -> fontsize : 14
-export function L12({ children, otherProps }: { children: string; otherProps?: TextProps }) {
+export function L12({
+  children,
+  otherProps,
+}: {
+  children: string | ReactNode;
+  otherProps?: TextProps;
+}) {
   return (
     <Label
       // ! Don't change this order of props

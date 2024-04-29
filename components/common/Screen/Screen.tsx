@@ -7,10 +7,8 @@ function Screen({ children }: { children: React.ReactNode }) {
   return (
     <View
       f={1}
-      mt={top}
-      mb={bottom}
-      ml={left}
-      mr={right}
+      px={24}
+      bg="$white"
     >
       {children}
     </View>
