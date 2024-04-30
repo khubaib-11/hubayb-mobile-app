@@ -11,6 +11,7 @@ import config from '../tamagui.config';
 import supabase from '@/services/supabase/supabase';
 import { Session } from '@supabase/supabase-js';
 import { ToastAndroid } from 'react-native';
+import { AuthContextProvider, useUser } from '@/context/authContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -23,32 +24,8 @@ export const unstable_settings = {
   initialRouteName: '(tabs)',
 };
 
-// Prevent the splash screen from auto-hiding before asset loading is complete.
-SplashScreen.preventAutoHideAsync();
-
 function RootLayoutNav() {
-  const [isLoadingSession, setIsLoadingSession] = useState(false);
-  const [hasSession, setHasSession] = useState(false);
   const colorScheme = useColorScheme();
-
-  useEffect(() => {
-    supabase.auth
-      .getSession()
-      .then(({ data: { session } }) => {
-        setIsLoadingSession(false);
-        if (session) {
-          setHasSession(true);
-          SplashScreen.hideAsync();
-          ToastAndroid.show('✅ Session found', 2000);
-        } else {
-          setHasSession(false);
-          ToastAndroid.show('❌ Session not found', 2000);
-          SplashScreen.hideAsync();
-          router.replace('/SignUp');
-        }
-      })
-      .catch((e) => ToastAndroid.show(e.message, 3000));
-  }, []);
 
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
@@ -60,7 +37,7 @@ function RootLayoutNav() {
           />
 
           <Stack.Screen
-            name="signUp"
+            name="SignUp"
             options={{ presentation: 'modal' }}
           />
         </Stack>
@@ -70,5 +47,22 @@ function RootLayoutNav() {
 }
 
 export default function RootLayout() {
-  return <RootLayoutNav />;
+  const { isLoadingSession, session } = useUser();
+  console.log(isLoadingSession, session);
+
+  if (__DEV__) {
+    require('../ReactotronConfig');
+  }
+
+  useEffect(() => {
+    if (!isLoadingSession && !session) {
+      router.push('/SignUp');
+    }
+  }, [isLoadingSession, session]);
+
+  return (
+    <AuthContextProvider>
+      <RootLayoutNav />
+    </AuthContextProvider>
+  );
 }

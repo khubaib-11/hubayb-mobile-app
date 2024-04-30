@@ -45,7 +45,7 @@ function Input({
       name={name}
       render={({ field: { value, onChange, onBlur }, fieldState: { error } }) => (
         <View
-          bg="$red10"
+          bg={error ? '$red10' : 'transparent'}
           bbrr={8}
           bblr={8}
           pb={4}

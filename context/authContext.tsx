@@ -1,48 +1,54 @@
-import React from 'react';
-import { useStorageState } from './useStorageState';
+import React, { createContext, useContext, useEffect, useMemo, useState } from 'react';
 
-const AuthContext = React.createContext<{
-  signIn: () => void;
-  signOut: () => void;
-  session?: string | null;
-  isLoading: boolean;
+import { Session, User } from '@supabase/supabase-js';
+import supabase from '@/services/supabase/supabase';
+
+export const AuthContext = createContext<{
+  isLoadingSession: boolean;
+  user: User | null;
+  userSession: Session | null;
 }>({
-  signIn: () => null,
-  signOut: () => null,
-  session: null,
-  isLoading: false,
+  isLoadingSession: true,
+  user: null,
+  userSession: null,
 });
 
-// This hook can be used to access the user info.
-export function useSession() {
-  const value = React.useContext(AuthContext);
-  if (process.env.NODE_ENV !== 'production') {
-    if (!value) {
-      throw new Error('useSession must be wrapped in a <SessionProvider />');
-    }
-  }
+export function AuthContextProvider(props: any) {
+  const [isLoadingSession, setIsLoadingSession] = useState(true);
+  const [userSession, setUserSession] = useState<Session | null>(null);
+  const [user, setUser] = useState<User | null>(null);
 
-  return value;
-}
+  console.log(isLoadingSession);
 
-export function SessionProvider(props: React.PropsWithChildren) {
-  const [[isLoading, session], setSession] = useStorageState('session');
+  useEffect(() => {
+    const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {
+      console.log(`Supabase auth event: ${event}`);
+      setUserSession(session);
+      setUser(session?.user ?? null);
+    });
 
+    return () => {
+      authListener.subscription.unsubscribe();
+    };
+  }, []);
+
+  const value = {
+    isLoadingSession,
+    userSession,
+    user,
+  };
   return (
     <AuthContext.Provider
-      value={{
-        signIn: () => {
-          // Perform sign-in logic here
-          setSession('xxx');
-        },
-        signOut: () => {
-          setSession(null);
-        },
-        session,
-        isLoading,
-      }}
-    >
-      {props.children}
-    </AuthContext.Provider>
+      value={value}
+      {...props}
+    />
   );
 }
+
+export const useUser = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useUser must be used within a AuthContextProvider.');
+  }
+  return context;
+};

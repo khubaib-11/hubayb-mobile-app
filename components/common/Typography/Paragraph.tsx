@@ -5,6 +5,7 @@ const Paragraph = styled(Text, {
   fontWeight: '$normal',
   fontFamily: '$body',
   color: '$black',
+  letterSpacing: '$2',
 });
 
 // H16 -> fontsize : 16

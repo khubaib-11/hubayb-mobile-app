@@ -1,17 +1,10 @@
 import Screen from '@/components/common/Screen/Screen';
-import { L12 } from '@/components/common/Typography/Labels';
-import { View, styled } from '@tamagui/core';
+import { P16 } from '@/components/common/Typography/Paragraph';
 
 export default function index() {
   return (
     <Screen>
-      {/* <XStack> */}
-      <L12>uyyqryqoryuc rcy cy cyuyruwyeryuqyryuwyeyqry</L12>
-      <L12>uyyqryqoryuc rcy cy cyuyruwyeryuqyryuwyeyqry</L12>
-      {/* </XStack> */}
+      <P16>Home</P16>
     </Screen>
   );
 }
-const XStack = styled(View, {
-  flexDirection: 'row',
-});
