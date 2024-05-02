@@ -1,14 +1,7 @@
-import { StyleSheet, Text, View } from 'react-native';
-import React from 'react';
+import { Text } from 'react-native';
 
-const Like = () => {
-  return (
-    <View>
-      <Text>Like</Text>
-    </View>
-  );
-};
+function Like() {
+  return <Text>Like</Text>;
+}
 
 export default Like;
-
-const styles = StyleSheet.create({});

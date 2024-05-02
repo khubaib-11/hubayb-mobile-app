@@ -2,11 +2,13 @@ import React, { createContext, useContext, useEffect, useMemo, useState } from '
 
 import { Session, User } from '@supabase/supabase-js';
 import supabase from '@/services/supabase/supabase';
+import { err } from 'react-native-svg';
 
 export const AuthContext = createContext<{
   isLoadingSession: boolean;
   user: User | null;
   userSession: Session | null;
+  // login : async () => Session |
 }>({
   isLoadingSession: true,
   user: null,
@@ -17,8 +19,6 @@ export function AuthContextProvider(props: any) {
   const [isLoadingSession, setIsLoadingSession] = useState(true);
   const [userSession, setUserSession] = useState<Session | null>(null);
   const [user, setUser] = useState<User | null>(null);
-
-  console.log(isLoadingSession);
 
   useEffect(() => {
     const { data: authListener } = supabase.auth.onAuthStateChange(async (event, session) => {

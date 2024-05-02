@@ -1,14 +1,12 @@
+import { Tabs } from 'expo-router';
+import { Heart, Home, ShoppingBag, UserCircle2 } from '@tamagui/lucide-icons';
+import { mvs } from 'react-native-size-matters';
 import TabBarIcon from '@/components/common/Icons/TabBarIcon/TabBarIcon';
 import TabLabel from '@/components/tabs/TabLabel';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
-import { useColorScheme } from '@/components/useColorScheme';
-import Colors from '@/constants/Colors';
-import { Heart, Home, ShoppingBag, UserCircle2 } from '@tamagui/lucide-icons';
-import { Tabs } from 'expo-router';
-import { mvs } from 'react-native-size-matters';
 
 export default function TabLayout() {
-  const colorScheme = useColorScheme();
+  // const colorScheme = useColorScheme();
 
   return (
     <Tabs
@@ -76,6 +74,8 @@ export default function TabLayout() {
       <Tabs.Screen
         name="Like"
         options={{
+          // ? The below key hides the Likes tab. Change this behaviour when you impliment liking feature
+          href: null,
           title: 'Likes',
           tabBarLabel: ({ focused, color }) => (
             <TabLabel

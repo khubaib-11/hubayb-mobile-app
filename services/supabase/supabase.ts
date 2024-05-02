@@ -1,9 +1,9 @@
 import { SupportedStorage, createClient } from '@supabase/supabase-js';
 import { MMKV } from 'react-native-mmkv';
+import { Database } from './supabaseTypes';
 import { SUPABASE_URL, SUPABASE_ANON_KEY } from '@/constants/Config';
 
 export const storage = new MMKV({ id: 'supabase-storage' });
-
 const mmkvStorageConfig: SupportedStorage = {
   async setItem(key, data) {
     storage.set(key, data);
@@ -16,7 +16,7 @@ const mmkvStorageConfig: SupportedStorage = {
   },
 };
 
-const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY, {
+const supabase = createClient<Database>(SUPABASE_URL, SUPABASE_ANON_KEY, {
   auth: {
     storage: mmkvStorageConfig,
     autoRefreshToken: true,

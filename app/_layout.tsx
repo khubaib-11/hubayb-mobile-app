@@ -1,17 +1,12 @@
-import FontAwesome from '@expo/vector-icons/FontAwesome';
+import { useEffect } from 'react';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
-import { useFonts } from 'expo-font';
 import { Stack, router } from 'expo-router';
-import * as SplashScreen from 'expo-splash-screen';
-import { useEffect, useState } from 'react';
-
-import { useColorScheme } from '@/components/useColorScheme';
 import { TamaguiProvider } from '@tamagui/core';
-import config from '../tamagui.config';
-import supabase from '@/services/supabase/supabase';
-import { Session } from '@supabase/supabase-js';
-import { ToastAndroid } from 'react-native';
+import { QueryClientProvider } from '@tanstack/react-query';
+import queryClient from '@/services/queryClient/queryClient';
+import { useColorScheme } from '@/components/useColorScheme';
 import { AuthContextProvider, useUser } from '@/context/authContext';
+import config from '../tamagui.config';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -30,17 +25,19 @@ function RootLayoutNav() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <TamaguiProvider config={config}>
-        <Stack>
-          <Stack.Screen
-            name="(tabs)"
-            options={{ headerShown: false }}
-          />
+        <QueryClientProvider client={queryClient}>
+          <Stack>
+            <Stack.Screen
+              name="(tabs)"
+              options={{ headerShown: false }}
+            />
 
-          <Stack.Screen
-            name="SignUp"
-            options={{ presentation: 'modal' }}
-          />
-        </Stack>
+            <Stack.Screen
+              name="SignUp"
+              options={{ presentation: 'modal' }}
+            />
+          </Stack>
+        </QueryClientProvider>
       </TamaguiProvider>
     </ThemeProvider>
   );
