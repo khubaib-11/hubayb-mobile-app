@@ -4,9 +4,12 @@ import { mvs } from 'react-native-size-matters';
 import TabBarIcon from '@/components/common/Icons/TabBarIcon/TabBarIcon';
 import TabLabel from '@/components/tabs/TabLabel';
 import { useClientOnlyValue } from '@/components/useClientOnlyValue';
+import { useCart } from '@/context/cartContext';
 
 export default function TabLayout() {
   // const colorScheme = useColorScheme();
+  const { cart } = useCart();
+  const badge = cart.length > 0 ? cart.length : undefined;
 
   return (
     <Tabs
@@ -50,9 +53,12 @@ export default function TabLayout() {
       />
 
       <Tabs.Screen
-        name="Bag"
+        name="ShoppingBag"
         options={{
-          title: 'Bag',
+          // lazy: false,
+
+          tabBarBadge: badge ?? undefined,
+          title: 'ShoppingBag',
           tabBarLabel: ({ focused, color }) => (
             <TabLabel
               color={color}

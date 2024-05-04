@@ -78,6 +78,18 @@ export function L20({ children, otherProps }: { children: string; otherProps?: T
     </Label>
   );
 }
+// H16 -> fontsize : 16
+export function L30({ children, otherProps }: { children: string; otherProps?: TextProps }) {
+  return (
+    <Label
+      // ! Don't change this order of props
+      fontSize="$30"
+      {...otherProps}
+    >
+      {children}
+    </Label>
+  );
+}
 
 L12.defaultProps = {
   otherProps: undefined,
@@ -93,5 +105,8 @@ L18.defaultProps = {
   otherProps: undefined,
 };
 L20.defaultProps = {
+  otherProps: undefined,
+};
+L30.defaultProps = {
   otherProps: undefined,
 };

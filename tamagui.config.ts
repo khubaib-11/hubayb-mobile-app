@@ -17,6 +17,7 @@ const outFitFont = createFont({
     20: 20,
     22: 22,
     24: 24,
+    30: 30,
     32: 32,
     40: 40,
   },

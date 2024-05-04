@@ -1,18 +1,22 @@
 import Column from '@/components/common/Column/Column';
+import QuantityChangeHandlers from '@/components/common/QuantityChangeHandlersButtons/QuantityChangeHandlersButtons';
 import Row from '@/components/common/Row/Row';
 import { L16, L18, L20 } from '@/components/common/Typography/Labels';
 import { P14, P16 } from '@/components/common/Typography/Paragraph';
+import BuyButton from '@/components/home/BuyButton/BuyButton';
 import { ms100, ms4, ms8, mvs16, mvs4, mvs8 } from '@/constants/responsiveUnits';
+import { useCart } from '@/context/cartContext';
 import { View } from '@tamagui/core';
-import { Ruler } from '@tamagui/lucide-icons';
+import { Minus, Plus, Ruler } from '@tamagui/lucide-icons';
 import { Image } from 'expo-image';
-import { StyleSheet } from 'react-native';
+import { StyleSheet, Vibration } from 'react-native';
 import { ms, mvs } from 'react-native-size-matters';
 
 const blurhash =
   '|rF?hV%2WCj[ayj[a|j[az_NaeWBj@ayfRayfQfQM{M|azj[azf6fQfQfQIpWXofj[ayj[j[fQayWCoeoeaya}j[ayfQa{oLj?j[WVj[ayayj[fQoff7azayj[ayj[j[ayofayayayj[fQj[ayayj[ayfjj[j[ayjuayj[';
 type ProductCardProps = {
   product: {
+    id: number;
     product_name: string;
     product_image: string;
     product_price: number;
@@ -24,6 +28,25 @@ type ProductCardProps = {
 };
 
 function ProductCardWithData({ product }: ProductCardProps) {
+  const { addItemToCart, getItemQuantityInCart } = useCart();
+  // Finds the quantity of current item in cart
+  const quantity = getItemQuantityInCart(product.id);
+
+  const { id, product_name, product_image, product_price, product_weight } = product;
+  const itemToBePurchased = {
+    id,
+    product_name,
+    product_image,
+    product_price,
+    product_weight: product_weight || '',
+    quantityInCart: quantity,
+  };
+
+  function onPressBuyButton() {
+    Vibration.vibrate(80);
+    addItemToCart(itemToBePurchased);
+  }
+
   return (
     <Column
       px={4}
@@ -86,16 +109,16 @@ function ProductCardWithData({ product }: ProductCardProps) {
       </Column>
       {/* details container ends */}
       {/* Buy button starts */}
-      <Row
-        align-center
-        justifyContent="center"
-        mt={mvs(12)}
-        bg="$black"
-        py={mvs(10)}
-        br={ms8}
-      >
-        <L16 otherProps={{ color: '$white' }}>Buy</L16>
-      </Row>
+      <View mt={mvs(12)}>
+        {quantity !== 0 ? (
+          <QuantityChangeHandlers
+            quantity={quantity}
+            itemToBePurchased={itemToBePurchased}
+          />
+        ) : (
+          <BuyButton onPress={onPressBuyButton} />
+        )}
+      </View>
       {/* Buy button ends */}
     </Column>
   );

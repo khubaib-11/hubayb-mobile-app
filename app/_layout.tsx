@@ -7,6 +7,7 @@ import queryClient from '@/services/queryClient/queryClient';
 import { useColorScheme } from '@/components/useColorScheme';
 import { AuthContextProvider, useUser } from '@/context/authContext';
 import config from '../tamagui.config';
+import CartProvider from '@/context/cartContext';
 
 export {
   // Catch any errors thrown by the Layout component.
@@ -26,17 +27,22 @@ function RootLayoutNav() {
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <TamaguiProvider config={config}>
         <QueryClientProvider client={queryClient}>
-          <Stack>
-            <Stack.Screen
-              name="(tabs)"
-              options={{ headerShown: false }}
-            />
+          <CartProvider>
+            <Stack>
+              <Stack.Screen
+                name="(tabs)"
+                options={{
+                  headerShown: false,
+                  statusBarColor: 'black',
+                }}
+              />
 
-            <Stack.Screen
-              name="SignUp"
-              options={{ presentation: 'modal' }}
-            />
-          </Stack>
+              <Stack.Screen
+                name="SignUp"
+                options={{ presentation: 'modal' }}
+              />
+            </Stack>
+          </CartProvider>
         </QueryClientProvider>
       </TamaguiProvider>
     </ThemeProvider>
